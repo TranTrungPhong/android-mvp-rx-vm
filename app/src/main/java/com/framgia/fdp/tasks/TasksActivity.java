@@ -26,18 +26,24 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import com.framgia.fdp.Injection;
 import com.framgia.fdp.R;
 import com.framgia.fdp.util.ActivityUtils;
 import com.framgia.fdp.util.EspressoIdlingResource;
-import com.framgia.fdp.Injection;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
     private DrawerLayout mDrawerLayout;
 
     private TasksPresenter mTasksPresenter;
+    private TaskAction mTaskAction;
+
+    public void setTaskAction(TaskAction taskAction) {
+        mTaskAction = taskAction;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,9 @@ public class TasksActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
+
+        //setup fab
+        findViewById(R.id.fab_add_task).setOnClickListener(this);
 
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,5 +138,16 @@ public class TasksActivity extends AppCompatActivity {
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_add_task:
+                if (mTaskAction != null) mTaskAction.onAddTaskClick();
+                break;
+            default:
+                break;
+        }
     }
 }
