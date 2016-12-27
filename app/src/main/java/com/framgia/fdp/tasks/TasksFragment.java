@@ -16,6 +16,7 @@
 
 package com.framgia.fdp.tasks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,13 +46,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Display a grid of {@link Task}s. User can choose to view all, active or completed tasks.
  */
-public class TasksFragment extends Fragment implements TasksContract.View {
+public class TasksFragment extends Fragment implements TasksContract.View, TaskAction {
 
     private TasksContract.Presenter mPresenter;
 
     private TasksAdapter mListAdapter;
 
     private TasksViewModel mTasksViewModel;
+    private TasksFragBinding tasksFragBinding;
 
     public TasksFragment() {
         // Requires empty public constructor
@@ -87,7 +89,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        TasksFragBinding tasksFragBinding = TasksFragBinding.inflate(inflater, container, false);
+        tasksFragBinding = TasksFragBinding.inflate(inflater, container, false);
 
         tasksFragBinding.setTasks(mTasksViewModel);
 
@@ -100,16 +102,16 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         listView.setAdapter(mListAdapter);
 
         // Set up floating action button
-        FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_add_task);
-
-        fab.setImageResource(R.drawable.ic_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.addNewTask();
-            }
-        });
+        //FloatingActionButton fab =
+        //        (FloatingActionButton) getActivity().findViewById(R.id.fab_add_task);
+        //
+        //fab.setImageResource(R.drawable.ic_add);
+        //fab.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        mPresenter.addNewTask();
+        //    }
+        //});
 
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout = tasksFragBinding.refreshLayout;
@@ -183,8 +185,9 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         if (getView() == null) {
             return;
         }
-        final SwipeRefreshLayout srl =
-                (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
+        //final SwipeRefreshLayout srl =
+        //        (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
+        final SwipeRefreshLayout srl = tasksFragBinding.refreshLayout;
 
         // Make sure setRefreshing() is called after the layout is done with everything else.
         srl.post(new Runnable() {
@@ -245,7 +248,20 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof TasksActivity) {
+            ((TasksActivity) context).setTaskAction(this);
+        }
+    }
+
+    @Override
     public boolean isActive() {
         return isAdded();
+    }
+
+    @Override
+    public void onAddTaskClick() {
+        mPresenter.addNewTask();
     }
 }
