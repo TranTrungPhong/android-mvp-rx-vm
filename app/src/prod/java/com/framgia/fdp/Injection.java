@@ -16,15 +16,16 @@
 
 package com.framgia.fdp;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import android.content.Context;
 import android.support.annotation.NonNull;
-
 import com.framgia.fdp.data.source.TasksDataSource;
 import com.framgia.fdp.data.source.TasksRepository;
 import com.framgia.fdp.data.source.local.TasksLocalDataSource;
 import com.framgia.fdp.data.source.remote.TasksRemoteDataSource;
+import com.framgia.fdp.util.schedulers.BaseSchedulerProvider;
+import com.framgia.fdp.util.schedulers.SchedulerProvider;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Enables injection of production implementations for
@@ -35,6 +36,10 @@ public class Injection {
     public static TasksRepository provideTasksRepository(@NonNull Context context) {
         checkNotNull(context);
         return TasksRepository.getInstance(TasksRemoteDataSource.getInstance(),
-                TasksLocalDataSource.getInstance(context));
+                TasksLocalDataSource.getInstance(context, provideSchedulerProvider()));
+    }
+
+    public static BaseSchedulerProvider provideSchedulerProvider() {
+        return SchedulerProvider.getInstance();
     }
 }

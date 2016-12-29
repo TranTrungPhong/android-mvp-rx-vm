@@ -86,11 +86,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        //View root = inflater.inflate(R.layout.addtask_frag, container, false);
-        //mTitle = (TextView) root.findViewById(R.id.add_task_title);
-        //mDescription = (TextView) root.findViewById(R.id.add_task_description);
-        //setHasOptionsMenu(true);
-
         View root = inflater.inflate(R.layout.addtask_frag, container, false);
         mViewDataBinding = AddtaskFragBinding.bind(root);
 
@@ -99,7 +94,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
 
         setHasOptionsMenu(true);
         setRetainInstance(true);
-
         return root;
     }
 
@@ -118,16 +112,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     public void setTask(Task task) {
         mViewDataBinding.setTask(task);
     }
-
-    //@Override
-    //public void setTitle(String title) {
-    //    mTitle.setText(title);
-    //}
-    //
-    //@Override
-    //public void setDescription(String description) {
-    //    mDescription.setText(description);
-    //}
 
     @Override
     public boolean isActive() {
