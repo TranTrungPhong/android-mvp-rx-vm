@@ -31,13 +31,9 @@ public interface AddEditTaskContract {
 
         void showTasksList();
 
-        //void setTitle(String title);
-        //
-        //void setDescription(String description);
         void setTask(Task task);
 
         boolean isActive();
-
     }
 
     interface Presenter extends BasePresenter {
@@ -45,7 +41,5 @@ public interface AddEditTaskContract {
         void saveTask(String title, String description);
 
         void populateTask();
-
-        //boolean isDataMissing();
     }
 }

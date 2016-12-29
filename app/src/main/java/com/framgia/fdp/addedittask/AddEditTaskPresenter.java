@@ -118,8 +118,6 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter {
                     @Override
                     public void onNext(Task task) {
                         if (mAddTaskView.isActive()) {
-                            //mAddTaskView.setTitle(task.getTitle());
-                            //mAddTaskView.setDescription(task.getDescription());
                             mAddTaskView.setTask(task);
                             mIsDataMissing = false;
                         }
@@ -127,11 +125,6 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter {
                 });
         mSubscriptions.add(subscription);
     }
-
-    //@Override
-    //public boolean isDataMissing() {
-    //    return mIsDataMissing;
-    //}
 
     private boolean isNewTask() {
         return mTaskId == null;
